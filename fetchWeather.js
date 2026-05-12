@@ -1,12 +1,17 @@
-import fs from 'fs'
-import path from 'path'
-import dotenv from 'dotenv'
+import fs from 'fs' // fs stands for File System, allows to read and write our files
+// const fs = require('fs')
+import path from 'path' // Build a file path that works on any operation and system 
+import dotenv from 'dotenv' 
+
+// This is an alternate way of importing insted of using require(), 
 
 dotenv.config()
 
-const DATA_DIR = path.join(import.meta.dirname, 'data')
+const DATA_DIR = path.join(import.meta.dirname, 'data') // path points to the location on my drive
+// Grabbing the directory where I am right now and grabbing the data 
+// This line stores a path to a folder called data, and tells it where it is going to be and where to store this info 
 if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR)
+    fs.mkdirSync(DATA_DIR) // If the folder DATA_DIR does not exist, create one 
 }
 
 const WEATHER_FILE = path.join(DATA_DIR, 'weather.json')
@@ -24,12 +29,12 @@ export async function fetchWeather() {
         }
 
         const data = await response.json()
-        const nowUTC = new Date().toISOString()
-        data._last_updated_utc = nowUTC
+        const nowUTC = new Date().toISOString() // yyyy-mm-dd
+        data._last_updated_utc = nowUTC // to change the format from the american to currently used 
         fs.writeFileSync(WEATHER_FILE, JSON.stringify(data, null, 2))
 
-        const header = 'timestamp,city,temperature,description\n'
-        if (!fs.existsSync(LOG_FILE)) {
+        const header = 'timestamp,city,temperature,description\n' // \n creates a new line 
+        if (!fs.existsSync(LOG_FILE)) { 
             fs.writeFileSync(LOG_FILE, header)
         } else {
             const firstLine = fs.readFileSync(LOG_FILE, 'utf8').split('\n')[0]
@@ -39,7 +44,7 @@ export async function fetchWeather() {
         }
 
         const logEntry = `${nowUTC},${city},${data.main.temp},${data.weather[0].description}\n`
-        fs.appendFileSync(LOG_FILE, logEntry)
+        fs.appendFileSync(LOG_FILE, logEntry) // append to a file means add on 
 
         console.log(`Weather data updated for ${city} at ${nowUTC}`)
     } catch (err) {

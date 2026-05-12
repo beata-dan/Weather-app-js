@@ -22,7 +22,7 @@ app.get('/api/weather', (req, res) => {
     if (!fs.existsSync(WEATHER_FILE)) return res.status(404).json({ error: 'No weather data available' })
     try {
         const weatherData = JSON.parse(fs.readFileSync(WEATHER_FILE, 'utf8'))
-        res.json(weatherData)
+        res.json(weatherData) // Read the info from the file
     } catch (err) {
         console.error('Error reading weather.json:', err)
         res.status(500).json({ error: 'Failed to read weather data' })

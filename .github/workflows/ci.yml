@@ -1,15 +1,15 @@
-name: Weather Pipeline CI/CD (JS)
+name: Weather Pipeline CI/CD (JS) #Name of key with a corresponding value for GitHub to display
 
 on:
   push:
   schedule:
-    - cron: '0 */2 * * *'
-  workflow_dispatch:
+    - cron: '0 */2 * * *' # is an instruction to tell how many times to do something and when, can look at cron calculator to know when
+  workflow_dispatch: # The above means "I want you to run this at 0 mins past the hour every 2 hrs"
 
 permissions:
   contents: write
 
-jobs:
+jobs: # Essentially GitHub is creating a mini computer for these to run 
   test_and_fetch:
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci # Install exactly the version we have noted in package-lock.json to make it more faster and reliable, this is a version lock
       
       - name: Fetch latest Weather
         env:
@@ -36,7 +36,7 @@ jobs:
           WEATHER_CITY: ${{ secrets.CITY }}
         run: node fetchWeather.js
 
-      - name: Commit weather data if changed
+      - name: Commit weather data if changed # Automates this whole process
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

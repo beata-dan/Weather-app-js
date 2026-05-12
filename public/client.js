@@ -14,7 +14,7 @@ async function loadWeather() {
     }
 }
 
-async function loadChart() {
+async function loadChart() { // Plotly is used and is not deferred
     try {
         const res = await fetch('/api/weather-log')
         const { timestamps, temps } = await res.json()
