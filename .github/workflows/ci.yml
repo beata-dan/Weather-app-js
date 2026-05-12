@@ -29,7 +29,7 @@ jobs: # Essentially GitHub is creating a mini computer for these to run
       - name: Fetch latest Weather
         env:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-          WEATHER_CITY: ${{ secrets.CITY }}
+          CITY: ${{ secrets.CITY }}
         run: node fetchWeather.js
       - name: Commit weather data if changed # Automates this whole process
         run: |
